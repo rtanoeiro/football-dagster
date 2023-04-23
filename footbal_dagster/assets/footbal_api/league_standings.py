@@ -98,7 +98,11 @@ def league_standings(credentials, league_data):
     standings_dataframe = pd.DataFrame(standings_dataset)
     club_dataframe = pd.DataFrame(club_dataset)
 
-    pd.DataFrame(standings_dataset).to_csv("data/standings_data.csv", index=False)
-    pd.DataFrame(club_dataset).to_csv("data/club_data.csv", index=False)
+    pd.DataFrame(standings_dataset).to_csv(
+        f"{os.getcwd()}/footbal_dagster/results_data/standings_data.csv", index=False
+    )
+    pd.DataFrame(club_dataset).to_csv(
+        f"{os.getcwd()}/footbal_dagster/results_data/club_data.csv", index=False
+    )
 
     return standings_dataframe, club_dataframe
