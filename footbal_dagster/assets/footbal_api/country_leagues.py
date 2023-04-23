@@ -23,12 +23,6 @@ def get_countries_leagues(credentials):
         AssertionError: In case the extraction fails, an error is raised
     """
 
-    # logging.basicConfig(
-    #     level=logging.DEBUG,
-    #     format="%(asctime)s:  %(levelname)s MESSAGE: %(message)s",
-    #     filename="logs/league_data.txt",
-    # )
-
     leagues = {
         "England": "Premier League",
         # "Germany": "Bundesliga",
