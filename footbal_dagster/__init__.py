@@ -1,10 +1,16 @@
+"""
+Initialize all usable assets/resources/sensors that are defined within the project
+"""
+
 from dagster import Definitions, load_assets_from_modules
 
-from footbal_dagster.assets import country_leagues_asset
+from footbal_dagster.assets.footbal_api import country_leagues, league_standings
+from footbal_dagster.assets.credentials import credentials
 
-country_league_asset = load_assets_from_modules([country_leagues_asset])
+footbal_api_asset = load_assets_from_modules([country_leagues, league_standings])
+credentials_asset = load_assets_from_modules([credentials])
 
-all_assets = [*country_league_asset]
+all_assets = [*footbal_api_asset, *credentials_asset]
 
 defs = Definitions(
     assets=all_assets,

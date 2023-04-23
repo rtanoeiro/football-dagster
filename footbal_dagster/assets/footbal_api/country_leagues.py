@@ -6,28 +6,9 @@ import os
 
 import pandas as pd
 import requests
-from dagster import asset, AssetIn
-from typing import Union
+from dagster import AssetIn, asset
 
-from footbal_dagster.utils.tables_schema import (
-    club_data_json,
-    league_data_json,
-    score_assists_data_json,
-    standings_data,
-)
-
-
-@asset
-def get_credentials() -> dict[str, str]:
-    """
-    This function will be user to get the credentials to make API Requests
-    """
-    api_key = os.environ["X-RAPIDAPI-KEY"]
-    api_host = os.environ["X-RAPIDAPI-HOST"]
-
-    api_credentials = {"X-RapidAPI-Key": api_key, "X-RapidAPI-Host": api_host}
-
-    return api_credentials
+from footbal_dagster.utils.tables_schema import league_data_json
 
 
 @asset(ins={"credentials": AssetIn("get_credentials")})
