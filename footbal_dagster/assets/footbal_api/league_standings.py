@@ -15,7 +15,7 @@ from footbal_dagster.utils.tables_schema import club_data_json, standings_data
 @asset(
     ins={
         "credentials": AssetIn("get_credentials"),
-        "league_data": AssetIn("get_countries_leagues"),
+        "league_data": AssetIn("get_country_leagues"),
     }
 )
 def league_standings(
