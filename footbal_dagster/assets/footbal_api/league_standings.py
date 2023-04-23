@@ -5,6 +5,7 @@ Gathering leagues data available on API
 import logging
 import os
 
+from typing import Tuple
 import pandas as pd
 import requests
 from dagster import AssetIn, asset
@@ -18,7 +19,9 @@ from footbal_dagster.utils.tables_schema import club_data_json, standings_data
         "league_data": AssetIn("get_countries_leagues"),
     }
 )
-def league_standings(credentials, league_data):
+def league_standings(
+    credentials: dict[str, str], league_data: pd.DataFrame
+) -> Tuple(pd.DataFrame, pd.DataFrame):
     """From each country gathered on the league_data asset,
     This asset will gather standings (league table) and data for each club on the league
 
@@ -35,7 +38,6 @@ def league_standings(credentials, league_data):
     club_dataset = club_data_json
     standings_dataset = standings_data
 
-    league_data = pd.read_csv(league_data)
     ids = league_data["id"].tolist()
     seasons = league_data["current_season"].tolist()
 

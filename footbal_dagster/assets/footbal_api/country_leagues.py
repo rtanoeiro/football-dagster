@@ -12,7 +12,7 @@ from footbal_dagster.utils.tables_schema import league_data_json
 
 
 @asset(ins={"credentials": AssetIn("get_credentials")})
-def get_countries_leagues(credentials):
+def get_countries_leagues(credentials: dict[str, str]):
     """Gathering leagues data available on API
 
     Args:
