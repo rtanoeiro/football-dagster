@@ -16,7 +16,7 @@ from footbal_dagster.utils.tables_schema import score_assists_data_json
 @asset(
     ins={
         "credentials": AssetIn("get_credentials"),
-        "league_data": AssetIn("get_countries_leagues"),
+        "league_data": AssetIn("get_country_leagues"),
     }
 )
 def get_league_statistics(
@@ -56,14 +56,14 @@ def get_league_statistics(
         else:
             raise AssertionError("Data failed to extracted")
 
-        data_score = response_score.json()["response"]
-        data_assist = response_assist.json()["response"]
+        score_content = response_score.json()["response"]
+        assist_content = response_assist.json()["response"]
 
         score_dataset = parse_score_assist_data(
-            stats_data=data_score, final_dataset=score_dataset
+            stats_data=score_content, final_dataset=score_dataset
         )
         assist_dataset = parse_score_assist_data(
-            stats_data=data_assist, final_dataset=assist_dataset
+            stats_data=assist_content, final_dataset=assist_dataset
         )
 
     score_dataframe = pd.DataFrame(score_dataset)
