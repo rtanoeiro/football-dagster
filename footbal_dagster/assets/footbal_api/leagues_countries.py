@@ -8,33 +8,25 @@ import pandas as pd
 import requests
 from dagster import AssetIn, asset
 
-from footbal_dagster.utils.tables_schema import league_data_json
+from footbal_dagster.utils.tables_schema import league_data_json, leagues
 
 # TODO: Convert credentials into a resource
 # TODO: Check how we can improve logging into Dagster assets
 # TODO: Check how to create separate workflows so even though assets
 # are dependent on each other, they have a different pipeline
+# TODO: Check how we can integrate a SQL Export
 
 
 @asset(ins={"credentials": AssetIn("get_credentials")})
-def get_countries_leagues(credentials: dict[str, str]):
+def get_country_leagues(credentials: dict[str, str]):
     """Gathering leagues data available on API
 
     Args:
         credentials (Dictionary): Asset to load credentials.
 
-
     Raises:
         AssertionError: In case the extraction fails, an error is raised
     """
-
-    leagues = {
-        "England": "Premier League",
-        # "Germany": "Bundesliga",
-        # "Italy": "Serie A",
-        # "France": "Ligue 1",
-        # "Spain": "La Liga",
-    }
 
     league_dataset = league_data_json
 
