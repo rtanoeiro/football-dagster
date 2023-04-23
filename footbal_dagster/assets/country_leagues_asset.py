@@ -90,8 +90,10 @@ def get_countries_leagues(credentials):
             league_dataset["start_date"].append(data["seasons"][0]["start"])
             league_dataset["end_date"].append(data["seasons"][0]["end"])
 
+    league_dataframe = pd.DataFrame(league_dataset)
+
     pd.DataFrame(league_dataset).to_csv(
         f"{os.getcwd()}/footbal_dagster/results_data/league_data.csv", index=False
     )
 
-    return
+    return league_dataframe
