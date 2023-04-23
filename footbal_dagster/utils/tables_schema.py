@@ -2,7 +2,7 @@
 This module will contain schema for the scrapped data
 """
 
-from typing import Union
+from typing import Union, TypedDict
 
 club_data_json: dict[str, list[Union[str, int]]] = {
     "club_id": [],
@@ -22,7 +22,7 @@ league_data_json: dict[str, list[Union[str, int]]] = {
     "end_date": [],
 }
 
-score_assists_data_json: dict[str, list[Union[str, int]]] = {
+score_assists_data_json: dict[str, list[Union[str, int, bool, float]]] = {
     "player_id": [],
     "club_id": [],
     "league_id": [],
@@ -72,3 +72,37 @@ standings_data: dict[str, list[Union[str, int]]] = {
     "away_goals": [],
     "away_conceded": [],
 }
+
+
+class ScoreAssistMetada(TypedDict):
+    """
+    Class to hold the Metadata for the Score and Assist Tables
+
+    Args:
+        TypedDict (TypedDict): TypedDict introduced on Python 3.8+
+        https://peps.python.org/pep-0589/
+    """
+
+    player_id: int
+    club_id: int
+    league_id: int
+    player_name: str
+    player_position: str
+    player_rating: float
+    player_age: int
+    player_nationality: str
+    player_height: int
+    player_weight: int
+    player_photo: str
+    injured: bool
+    appearences: int
+    minutes: int
+    shots_total: int
+    shots_on_goal: int
+    goals: int
+    assists: int
+    passes: int
+    key_passes: int
+    passes_accuracy: int
+    penalties_scored: int
+    penalties_missed: int
