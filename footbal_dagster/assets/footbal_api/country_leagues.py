@@ -10,6 +10,11 @@ from dagster import AssetIn, asset
 
 from footbal_dagster.utils.tables_schema import league_data_json
 
+# TODO: Convert credentials into a resource
+# TODO: Check how we can improve logging into Dagster assets
+# TODO: Check how to create separate workflows so even though assets
+# are dependent on each other, they have a different pipeline
+
 
 @asset(ins={"credentials": AssetIn("get_credentials")})
 def get_countries_leagues(credentials: dict[str, str]):
@@ -17,7 +22,7 @@ def get_countries_leagues(credentials: dict[str, str]):
 
     Args:
         credentials (Dictionary): Asset to load credentials.
-        #TODO: Perhaps convert it to a resource?
+
 
     Raises:
         AssertionError: In case the extraction fails, an error is raised

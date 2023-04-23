@@ -21,7 +21,8 @@ from footbal_dagster.utils.tables_schema import club_data_json, standings_data
 def league_standings(
     credentials: dict[str, str], league_data: pd.DataFrame
 ) -> tuple[pd.DataFrame, pd.DataFrame]:
-    """From each country gathered on the league_data asset,
+    """
+    From each country gathered on the league_data asset,
     This asset will gather standings (league table) and data for each club on the league
 
     Args:
