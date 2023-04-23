@@ -1,3 +1,7 @@
+"""
+Script containing dependencies of dagster module 
+"""
+
 from setuptools import find_packages, setup
 
 setup(
