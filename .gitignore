@@ -1,0 +1,5 @@
+*.env
+tmp*/
+footbal_dagster.egg*/
+__pycache__/
+.vscode/
