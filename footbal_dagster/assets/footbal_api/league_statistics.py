@@ -4,6 +4,7 @@ This script sill get the Scoring and Assist Data for each league
 
 import logging
 import os
+from typing import Any, Union
 
 import pandas as pd
 import requests
@@ -19,7 +20,8 @@ from footbal_dagster.utils.tables_schema import score_assists_data_json
     }
 )
 def get_league_statistics(
-    credentials: dict[str, str], league_data: pd.DataFrame
+    credentials: dict[str, str],
+    league_data: pd.DataFrame,
 ) -> tuple[pd.DataFrame, pd.DataFrame]:
     """
     From each country gathered on the league_data asset,  this asset will
@@ -48,6 +50,7 @@ def get_league_statistics(
         response_assist = requests.get(
             os.environ["ASSIST_URL"], headers=credentials, params=params, timeout=5
         )
+
         if response_score.status_code == 200 and response_assist.status_code == 200:
             logging.info("Successfully extracted data for league statistics")
         else:
@@ -56,75 +59,12 @@ def get_league_statistics(
         data_score = response_score.json()["response"]
         data_assist = response_assist.json()["response"]
 
-        for data in data_score:
-            player_data = data["player"]
-            player_stats = data["statistics"][0]
-
-            score_dataset["player_id"].append(player_data["id"])
-            score_dataset["club_id"].append(player_stats["team"]["id"])
-            score_dataset["league_id"].append(player_stats["league"]["id"])
-            score_dataset["player_name"].append(player_data["name"])
-            score_dataset["player_position"].append(player_stats["games"]["position"])
-            score_dataset["player_rating"].append(player_stats["games"]["rating"])
-            score_dataset["player_age"].append(player_data["age"])
-            score_dataset["player_nationality"].append(player_data["nationality"])
-            score_dataset["player_height"].append(
-                str(player_data["height"]).replace(" cm", "")
-            )
-            score_dataset["player_weight"].append(
-                str(player_data["weight"]).replace(" kg", "")
-            )
-            score_dataset["player_photo"].append(player_data["photo"])
-            score_dataset["injured"].append(player_data["injured"])
-            score_dataset["appearences"].append(player_stats["games"]["appearences"])
-            score_dataset["minutes"].append(player_stats["games"]["minutes"])
-            score_dataset["shots_total"].append(
-                int(player_stats["shots"]["total"] or 0)
-            )
-            score_dataset["shots_on_goal"].append(int(player_stats["shots"]["on"] or 0))
-            score_dataset["goals"].append(int(player_stats["goals"]["total"] or 0))
-            score_dataset["assists"].append(int(player_stats["goals"]["assists"] or 0))
-            score_dataset["passes"].append(int(player_stats["passes"]["total"] or 0))
-            score_dataset["key_passes"].append(int(player_stats["passes"]["key"] or 0))
-            score_dataset["passes_accuracy"].append(player_stats["passes"]["accuracy"])
-            score_dataset["penalties_scored"].append(player_stats["penalty"]["scored"])
-            score_dataset["penalties_missed"].append(player_stats["penalty"]["missed"])
-
-        for data in data_assist:
-            player_data = data["player"]
-            player_stats = data["statistics"][0]
-
-            assist_dataset["player_id"].append(player_data["id"])
-            assist_dataset["club_id"].append(player_stats["team"]["id"])
-            assist_dataset["league_id"].append(player_stats["league"]["id"])
-            assist_dataset["player_name"].append(player_data["name"])
-            assist_dataset["player_position"].append(player_stats["games"]["position"])
-            assist_dataset["player_rating"].append(player_stats["games"]["rating"])
-            assist_dataset["player_age"].append(player_data["age"])
-            assist_dataset["player_nationality"].append(player_data["nationality"])
-            assist_dataset["player_height"].append(
-                str(player_data["height"]).replace(" cm", "")
-            )
-            assist_dataset["player_weight"].append(
-                str(player_data["weight"]).replace(" kg", "")
-            )
-            assist_dataset["player_photo"].append(player_data["photo"])
-            assist_dataset["injured"].append(player_data["injured"])
-            assist_dataset["appearences"].append(player_stats["games"]["appearences"])
-            assist_dataset["minutes"].append(player_stats["games"]["minutes"])
-            assist_dataset["shots_total"].append(
-                int(player_stats["shots"]["total"] or 0)
-            )
-            assist_dataset["shots_on_goal"].append(
-                int(player_stats["shots"]["on"] or 0)
-            )
-            assist_dataset["goals"].append(int(player_stats["goals"]["total"] or 0))
-            assist_dataset["assists"].append(int(player_stats["goals"]["assists"] or 0))
-            assist_dataset["passes"].append(int(player_stats["passes"]["total"] or 0))
-            assist_dataset["key_passes"].append(int(player_stats["passes"]["key"] or 0))
-            assist_dataset["passes_accuracy"].append(player_stats["passes"]["accuracy"])
-            assist_dataset["penalties_scored"].append(player_stats["penalty"]["scored"])
-            assist_dataset["penalties_missed"].append(player_stats["penalty"]["missed"])
+        score_dataset = parse_score_assist_data(
+            stats_data=data_score, final_dataset=score_dataset
+        )
+        assist_dataset = parse_score_assist_data(
+            stats_data=data_assist, final_dataset=assist_dataset
+        )
 
     score_dataframe = pd.DataFrame(score_dataset)
     assist_dataframe = pd.DataFrame(assist_dataset)
@@ -137,3 +77,49 @@ def get_league_statistics(
     )
 
     return score_dataframe, assist_dataframe
+
+
+def parse_score_assist_data(
+    stats_data: list[dict[str, Any]],
+    final_dataset: dict[str, list[Union[str, int, bool, float]]],
+) -> dict[str, list[Union[str, int, bool, float]]]:
+    """
+    Function to parse the response that gets assists and score data
+    Args:
+        stats_data (dict[str, Union[str, int, Iterable]]): Dictionary containing all scraped info
+        final_dataset (pd.DataFrame): Final DataFrame
+    """
+
+    for data in stats_data:
+        player_data = data["player"]
+        player_stats = data["statistics"][0]
+
+        final_dataset["player_id"].append(player_data["id"])
+        final_dataset["club_id"].append(player_stats["team"]["id"])
+        final_dataset["league_id"].append(player_stats["league"]["id"])
+        final_dataset["player_name"].append(player_data["name"])
+        final_dataset["player_position"].append(player_stats["games"]["position"])
+        final_dataset["player_rating"].append(player_stats["games"]["rating"])
+        final_dataset["player_age"].append(player_data["age"])
+        final_dataset["player_nationality"].append(player_data["nationality"])
+        final_dataset["player_height"].append(
+            str(player_data["height"]).replace(" cm", "")
+        )
+        final_dataset["player_weight"].append(
+            str(player_data["weight"]).replace(" kg", "")
+        )
+        final_dataset["player_photo"].append(player_data["photo"])
+        final_dataset["injured"].append(player_data["injured"])
+        final_dataset["appearences"].append(player_stats["games"]["appearences"])
+        final_dataset["minutes"].append(player_stats["games"]["minutes"])
+        final_dataset["shots_total"].append(int(player_stats["shots"]["total"] or 0))
+        final_dataset["shots_on_goal"].append(int(player_stats["shots"]["on"] or 0))
+        final_dataset["goals"].append(int(player_stats["goals"]["total"] or 0))
+        final_dataset["assists"].append(int(player_stats["goals"]["assists"] or 0))
+        final_dataset["passes"].append(int(player_stats["passes"]["total"] or 0))
+        final_dataset["key_passes"].append(int(player_stats["passes"]["key"] or 0))
+        final_dataset["passes_accuracy"].append(player_stats["passes"]["accuracy"])
+        final_dataset["penalties_scored"].append(player_stats["penalty"]["scored"])
+        final_dataset["penalties_missed"].append(player_stats["penalty"]["missed"])
+
+    return final_dataset
