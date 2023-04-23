@@ -4,6 +4,14 @@ This module will contain schema for the scrapped data
 
 from typing import Union
 
+leagues = {
+    "England": "Premier League",
+    # "Germany": "Bundesliga",
+    # "Italy": "Serie A",
+    # "France": "Ligue 1",
+    # "Spain": "La Liga",
+}
+
 club_data_json: dict[str, list[Union[str, int]]] = {
     "club_id": [],
     "club_name": [],
