@@ -5,9 +5,10 @@ import os
 
 import pandas as pd
 import requests
-from dagster import asset
+from dagster import asset, OpExecutionContext
 
 from footbal_dagster.utils.tables_schema import league_data_json, leagues
+from footbal_dagster.resources.credentials import get_credentials
 
 # TODO: Convert credentials into a resource
 # TODO: Check how we can improve logging into Dagster assets
@@ -19,7 +20,7 @@ from footbal_dagster.utils.tables_schema import league_data_json, leagues
 @asset(
     required_resource_keys={"credentials"},
 )
-def get_country_leagues(credentials: dict[str, str]):
+def get_country_leagues(context: OpExecutionContext):
     """Gathering leagues data available on API
 
     Args:
@@ -42,7 +43,7 @@ def get_country_leagues(credentials: dict[str, str]):
         response = requests.request(
             "GET",
             url=os.environ["LEAGUES_URL"],
-            headers=credentials,
+            headers=context.resources.credentials,
             params=params,
             timeout=5,
         )

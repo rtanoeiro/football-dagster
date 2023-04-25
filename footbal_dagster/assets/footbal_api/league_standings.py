@@ -7,7 +7,7 @@ import os
 
 import pandas as pd
 import requests
-from dagster import AssetIn, asset
+from dagster import AssetIn, asset, OpExecutionContext
 
 from footbal_dagster.utils.tables_schema import club_data_json, standings_data
 
@@ -17,9 +17,10 @@ from footbal_dagster.utils.tables_schema import club_data_json, standings_data
         "league_data": AssetIn("get_country_leagues"),
     },
     required_resource_keys={"credentials"},
+    group_name="Standings_table",
 )
 def league_standings(
-    credentials: dict[str, str], league_data: pd.DataFrame
+    context: OpExecutionContext, league_data: pd.DataFrame
 ) -> tuple[pd.DataFrame, pd.DataFrame]:
     """
     From each country gathered on the league_data asset,
@@ -48,7 +49,7 @@ def league_standings(
 
         response = requests.get(
             url=os.environ["STANDINGS_URL"],
-            headers=credentials,
+            headers=context.resources.credentials,
             params=params,
             timeout=5,
         )

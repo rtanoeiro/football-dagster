@@ -11,6 +11,7 @@ import requests
 from dagster import AssetIn, asset
 
 from footbal_dagster.utils.tables_schema import score_assists_data_json
+from footbal_dagster.resources.credentials import get_credentials
 
 
 @asset(
@@ -18,9 +19,9 @@ from footbal_dagster.utils.tables_schema import score_assists_data_json
         "league_data": AssetIn("get_country_leagues"),
     },
     required_resource_keys={"credentials"},
+    group_name="Statistics_table",
 )
 def get_league_statistics(
-    credentials: dict[str, str],
     league_data: pd.DataFrame,
 ) -> tuple[pd.DataFrame, pd.DataFrame]:
     """
@@ -44,11 +45,17 @@ def get_league_statistics(
     for current_id, current_season in zip(ids, seasons):
         params = {"league": current_id, "season": current_season}
         response_score = requests.get(
-            os.environ["SCORING_URL"], headers=credentials, params=params, timeout=5
+            os.environ["SCORING_URL"],
+            headers=get_credentials(),
+            params=params,
+            timeout=5,
         )
 
         response_assist = requests.get(
-            os.environ["ASSIST_URL"], headers=credentials, params=params, timeout=5
+            os.environ["ASSIST_URL"],
+            headers=get_credentials(),
+            params=params,
+            timeout=5,
         )
 
         if response_score.status_code == 200 and response_assist.status_code == 200:
