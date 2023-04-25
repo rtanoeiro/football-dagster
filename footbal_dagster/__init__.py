@@ -9,15 +9,13 @@ from footbal_dagster.assets.footbal_api import (
     league_statistics,
     leagues_countries,
 )
-from footbal_dagster.assets.credentials import credentials
+from footbal_dagster.resources.credentials import get_credentials
 
 footbal_api_asset = load_assets_from_modules(
     [leagues_countries, league_standings, league_statistics]
 )
-credentials_asset = load_assets_from_modules([credentials])
 
-all_assets = [*footbal_api_asset, *credentials_asset]
+all_assets = [*footbal_api_asset]
+all_resources = {"credentials": get_credentials()}
 
-defs = Definitions(
-    assets=all_assets,
-)
+defs = Definitions(assets=all_assets, resources=all_resources)
