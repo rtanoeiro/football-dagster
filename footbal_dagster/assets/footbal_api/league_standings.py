@@ -27,7 +27,6 @@ def league_standings(
 
     Args:
         credentials (Dictionary): Asset to load credentials.
-        #TODO: Perhaps convert it to a resource?
         league_data(Asset): Asset that will hold which leagues will have their tables
             scraped
 

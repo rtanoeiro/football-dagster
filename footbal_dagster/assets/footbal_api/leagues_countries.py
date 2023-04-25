@@ -11,6 +11,7 @@ from dagster import AssetIn, asset
 from footbal_dagster.utils.tables_schema import league_data_json, leagues
 
 # TODO: Convert credentials into a resource
+# TODO: Understand the difference between asset and ops
 # TODO: Check how we can improve logging into Dagster assets
 # TODO: Check how to create separate workflows so even though assets
 # are dependent on each other, they have a different pipeline
