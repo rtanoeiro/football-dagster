@@ -3,7 +3,7 @@ Asset to get the credentials to scrape data
 """
 
 import os
-from dagster import resource, String
+from dagster import resource
 
 
 @resource
