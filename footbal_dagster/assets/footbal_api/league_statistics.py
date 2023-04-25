@@ -15,9 +15,9 @@ from footbal_dagster.utils.tables_schema import score_assists_data_json
 
 @asset(
     ins={
-        "credentials": AssetIn("get_credentials"),
         "league_data": AssetIn("get_country_leagues"),
-    }
+    },
+    required_resource_keys={"credentials"},
 )
 def get_league_statistics(
     credentials: dict[str, str],

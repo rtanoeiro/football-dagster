@@ -1,12 +1,11 @@
 """"
 This module will contains all assets for this Dagster project
 """
-import logging
 import os
 
 import pandas as pd
 import requests
-from dagster import AssetIn, asset
+from dagster import asset
 
 from footbal_dagster.utils.tables_schema import league_data_json, leagues
 
@@ -18,7 +17,9 @@ from footbal_dagster.utils.tables_schema import league_data_json, leagues
 # TODO: Check how we can integrate a SQL Export
 
 
-@asset(ins={"credentials": AssetIn("get_credentials")})
+@asset(
+    required_resource_keys={"credentials"},
+)
 def get_country_leagues(credentials: dict[str, str]):
     """Gathering leagues data available on API
 
@@ -47,7 +48,8 @@ def get_country_leagues(credentials: dict[str, str]):
             timeout=5,
         )
         if response.status_code == 200:
-            logging.info("Successfully extracted data for country and league")
+            # context.log.info("Successfully extracted data for country and league")
+            pass
         else:
             raise AssertionError("Data failed to extracted")
 
