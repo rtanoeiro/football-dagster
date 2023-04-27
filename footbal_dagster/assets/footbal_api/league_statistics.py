@@ -8,10 +8,9 @@ from typing import Any, Union
 
 import pandas as pd
 import requests
-from dagster import AssetIn, asset
+from dagster import AssetIn, asset, OpExecutionContext
 
 from footbal_dagster.utils.tables_schema import score_assists_data_json
-from footbal_dagster.resources.credentials import get_credentials
 
 
 @asset(
@@ -22,6 +21,7 @@ from footbal_dagster.resources.credentials import get_credentials
     group_name="Statistics_table",
 )
 def get_league_statistics(
+    context: OpExecutionContext,
     league_data: pd.DataFrame,
 ) -> tuple[pd.DataFrame, pd.DataFrame]:
     """
@@ -46,14 +46,14 @@ def get_league_statistics(
         params = {"league": current_id, "season": current_season}
         response_score = requests.get(
             os.environ["SCORING_URL"],
-            headers=get_credentials(),
+            headers=context.resources.credentials,
             params=params,
             timeout=5,
         )
 
         response_assist = requests.get(
             os.environ["ASSIST_URL"],
-            headers=get_credentials(),
+            headers=context.resources.credentials,
             params=params,
             timeout=5,
         )
