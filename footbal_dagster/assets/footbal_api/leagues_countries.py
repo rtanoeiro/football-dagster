@@ -18,6 +18,7 @@ from footbal_dagster.utils.tables_schema import league_data_json, leagues
 
 @asset(
     required_resource_keys={"credentials"},
+    group_name="standings_table",
 )
 def get_country_leagues(context: OpExecutionContext):
     """Gathering leagues data available on API
