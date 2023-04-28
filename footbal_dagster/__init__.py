@@ -2,28 +2,13 @@
 Initialize all usable assets/resources/sensors that are defined within the project
 """
 
-from dagster import Definitions, load_assets_from_modules, ResourceDefinition, String
+from dagster import Definitions
 
-from footbal_dagster.assets.footbal_api import (
-    league_standings,
-    league_statistics,
-    leagues_countries,
-)
-from footbal_dagster.resources.credentials import get_credentials
+from footbal_dagster.assets import ASSETS
+from footbal_dagster.resources import RESOURCES
 
-footbal_api_asset = load_assets_from_modules(
-    [leagues_countries, league_standings, league_statistics]
-)
 
-api_credentials = ResourceDefinition(
-    resource_fn=get_credentials,
-    config_schema={
-        "X-RapidAPI-Key": String,
-        "X-RapidAPI-Host": String,
-    },
-)
-
-all_assets = [*footbal_api_asset]
-all_resources = {"credentials": api_credentials}
+all_assets = [*ASSETS]
+all_resources = RESOURCES
 
 defs = Definitions(assets=all_assets, resources=all_resources)

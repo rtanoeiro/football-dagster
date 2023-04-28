@@ -17,7 +17,7 @@ from footbal_dagster.utils.tables_schema import club_data_json, standings_data
         "league_data": AssetIn("get_country_leagues"),
     },
     required_resource_keys={"credentials"},
-    group_name="Standings_table",
+    group_name="standings_table",
 )
 def league_standings(
     context: OpExecutionContext, league_data: pd.DataFrame

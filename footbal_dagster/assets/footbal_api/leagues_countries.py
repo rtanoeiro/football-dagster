@@ -8,7 +8,6 @@ import requests
 from dagster import asset, OpExecutionContext
 
 from footbal_dagster.utils.tables_schema import league_data_json, leagues
-from footbal_dagster.resources.credentials import get_credentials
 
 # TODO: Convert credentials into a resource
 # TODO: Check how we can improve logging into Dagster assets
@@ -50,6 +49,7 @@ def get_country_leagues(context: OpExecutionContext):
         if response.status_code == 200:
             # context.log.info("Successfully extracted data for country and league")
             pass
+
         else:
             raise AssertionError("Data failed to extracted")
 
