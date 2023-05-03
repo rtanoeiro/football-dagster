@@ -18,6 +18,7 @@ from football_dagster.utils.tables_schema import score_assists_data_json
         "league_data": AssetIn("get_country_leagues"),
     },
     required_resource_keys={"credentials"},
+    group_name="updated_league_data",
 )
 def get_league_statistics(
     context: OpExecutionContext,
