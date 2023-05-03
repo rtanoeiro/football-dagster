@@ -9,7 +9,6 @@ from dagster import asset, OpExecutionContext
 
 from football_dagster.utils.tables_schema import league_data_json, leagues
 
-# TODO: Convert credentials into a resource
 # TODO: Check how we can improve logging into Dagster assets
 # TODO: Check how to create separate workflows so even though assets
 # are dependent on each other, they have a different pipeline
@@ -18,6 +17,7 @@ from football_dagster.utils.tables_schema import league_data_json, leagues
 
 @asset(
     required_resource_keys={"credentials"},
+    group_name="update_country_data",
 )
 def get_country_leagues(context: OpExecutionContext):
     """Gathering leagues data available on API
