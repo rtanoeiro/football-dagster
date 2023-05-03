@@ -8,9 +8,9 @@ from typing import Any, Union
 
 import pandas as pd
 import requests
-from dagster import AssetIn, asset, OpExecutionContext, op
+from dagster import AssetIn, asset, OpExecutionContext
 
-from footbal_dagster.utils.tables_schema import score_assists_data_json
+from football_dagster.utils.tables_schema import score_assists_data_json
 
 
 @asset(
@@ -18,7 +18,6 @@ from footbal_dagster.utils.tables_schema import score_assists_data_json
         "league_data": AssetIn("get_country_leagues"),
     },
     required_resource_keys={"credentials"},
-    group_name="statistics_table",
 )
 def get_league_statistics(
     context: OpExecutionContext,
@@ -77,16 +76,15 @@ def get_league_statistics(
     assist_dataframe = pd.DataFrame(assist_dataset)
 
     pd.DataFrame(score_dataframe).to_csv(
-        f"{os.getcwd()}/footbal_dagster/results_data/score_data.csv", index=False
+        f"{os.getcwd()}/football_dagster/results_data/score_data.csv", index=False
     )
     pd.DataFrame(assist_dataframe).to_csv(
-        f"{os.getcwd()}/footbal_dagster/results_data/assist_data.csv", index=False
+        f"{os.getcwd()}/football_dagster/results_data/assist_data.csv", index=False
     )
 
     return score_dataframe, assist_dataframe
 
 
-@op
 def parse_score_assist_data(
     stats_data: list[dict[str, Any]],
     final_dataset: dict[str, list[Union[str, int, bool, float]]],

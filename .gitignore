@@ -1,6 +1,6 @@
 *.env
 tmp*/
-footbal_dagster.egg*/
+football_dagster.egg*/
 __pycache__/
 .vscode/
 */*.csv

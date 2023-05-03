@@ -7,7 +7,7 @@ import pandas as pd
 import requests
 from dagster import asset, OpExecutionContext
 
-from footbal_dagster.utils.tables_schema import league_data_json, leagues
+from football_dagster.utils.tables_schema import league_data_json, leagues
 
 # TODO: Convert credentials into a resource
 # TODO: Check how we can improve logging into Dagster assets
@@ -18,7 +18,6 @@ from footbal_dagster.utils.tables_schema import league_data_json, leagues
 
 @asset(
     required_resource_keys={"credentials"},
-    group_name="standings_table",
 )
 def get_country_leagues(context: OpExecutionContext):
     """Gathering leagues data available on API
@@ -69,7 +68,7 @@ def get_country_leagues(context: OpExecutionContext):
     league_dataframe = pd.DataFrame(league_dataset)
 
     pd.DataFrame(league_dataset).to_csv(
-        f"{os.getcwd()}/footbal_dagster/results_data/league_data.csv", index=False
+        f"{os.getcwd()}/football_dagster/results_data/league_data.csv", index=False
     )
 
     return league_dataframe

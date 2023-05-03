@@ -9,7 +9,7 @@ import pandas as pd
 import requests
 from dagster import AssetIn, asset, OpExecutionContext
 
-from footbal_dagster.utils.tables_schema import club_data_json, standings_data
+from football_dagster.utils.tables_schema import club_data_json, standings_data
 
 
 @asset(
@@ -17,7 +17,6 @@ from footbal_dagster.utils.tables_schema import club_data_json, standings_data
         "league_data": AssetIn("get_country_leagues"),
     },
     required_resource_keys={"credentials"},
-    group_name="standings_table",
 )
 def league_standings(
     context: OpExecutionContext, league_data: pd.DataFrame
@@ -101,10 +100,10 @@ def league_standings(
     club_dataframe = pd.DataFrame(club_dataset)
 
     pd.DataFrame(standings_dataset).to_csv(
-        f"{os.getcwd()}/footbal_dagster/results_data/standings_data.csv", index=False
+        f"{os.getcwd()}/football_dagster/results_data/standings_data.csv", index=False
     )
     pd.DataFrame(club_dataset).to_csv(
-        f"{os.getcwd()}/footbal_dagster/results_data/club_data.csv", index=False
+        f"{os.getcwd()}/football_dagster/results_data/club_data.csv", index=False
     )
 
     return standings_dataframe, club_dataframe

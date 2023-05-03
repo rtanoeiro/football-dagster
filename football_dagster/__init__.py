@@ -4,8 +4,8 @@ Initialize all usable assets/resources/sensors that are defined within the proje
 
 from dagster import Definitions
 
-from footbal_dagster.assets import ASSETS
-from footbal_dagster.resources import RESOURCES
+from football_dagster.assets import ASSETS
+from football_dagster.resources import RESOURCES
 
 
 all_assets = [*ASSETS]

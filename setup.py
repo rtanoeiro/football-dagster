@@ -5,8 +5,8 @@ Script containing dependencies of dagster module
 from setuptools import find_packages, setup
 
 setup(
-    name="footbal_dagster",
-    packages=find_packages(exclude=["footbal_dagster_tests"]),
+    name="football_dagster",
+    packages=find_packages(exclude=["football_dagster_tests"]),
     install_requires=[
         "dagster",
         "dagster-cloud",
