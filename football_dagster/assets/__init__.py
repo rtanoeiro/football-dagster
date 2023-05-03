@@ -1,18 +1,9 @@
-"""
-Initialize all usable assets/resources/sensors that are defined within the project
-"""
+"""Initialize all usable assets/resources/sensors that are defined within the project"""
 
-from dagster import load_assets_from_modules
+from dagster import load_assets_from_package_module
 
-from football_dagster.assets.football_api import (
-    league_standings,
-    league_statistics,
-    leagues_countries,
-)
+from football_dagster.assets import football_api
 
-FOOTBALL_API = "football_api"
-football_api_asset = load_assets_from_modules(
-    [leagues_countries, league_standings, league_statistics], group_name="football_api"
-)
+football_api_asset = load_assets_from_package_module(football_api)
 
 ASSETS = football_api_asset
