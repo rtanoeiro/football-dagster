@@ -10,8 +10,6 @@ from dagster import asset, OpExecutionContext
 from football_dagster.utils.tables_schema import league_data_json, leagues
 
 # TODO: Check how we can improve logging into Dagster assets
-# TODO: Check how to create separate workflows so even though assets
-# are dependent on each other, they have a different pipeline
 # TODO: Check how we can integrate a SQL Export
 
 
