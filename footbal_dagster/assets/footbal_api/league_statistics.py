@@ -8,7 +8,7 @@ from typing import Any, Union
 
 import pandas as pd
 import requests
-from dagster import AssetIn, asset, OpExecutionContext
+from dagster import AssetIn, asset, OpExecutionContext, op
 
 from footbal_dagster.utils.tables_schema import score_assists_data_json
 
@@ -86,6 +86,7 @@ def get_league_statistics(
     return score_dataframe, assist_dataframe
 
 
+@op
 def parse_score_assist_data(
     stats_data: list[dict[str, Any]],
     final_dataset: dict[str, list[Union[str, int, bool, float]]],

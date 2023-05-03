@@ -11,7 +11,7 @@ from footbal_dagster.assets.footbal_api import (
 )
 
 footbal_api_asset = load_assets_from_modules(
-    [leagues_countries, league_standings, league_statistics]
+    [leagues_countries, league_standings, league_statistics], group_name="footbal_api"
 )
 
 ASSETS = footbal_api_asset
