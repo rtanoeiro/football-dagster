@@ -85,6 +85,17 @@ def get_league_statistics(
 
     return score_dataframe, assist_dataframe
 
+# Could this be an op?
+
+# No, Ops are used within a job or graph, and this is related to an Asset
+# An individual op should perform relatively simple tasks, such as:
+# 
+# Deriving a dataset from other datasets
+# Executing a database query
+# Initiating a Spark job in a remote cluster
+# Querying an API and storing the result in a data warehouse
+# Sending an email or Slack message
+
 def parse_score_assist_data(
     stats_data: list[dict[str, Any]],
     final_dataset: dict[str, list[Any]],
