@@ -85,7 +85,6 @@ def get_league_statistics(
 
     return score_dataframe, assist_dataframe
 
-@op
 def parse_score_assist_data(
     stats_data: list[dict[str, Any]],
     final_dataset: dict[str, list[Any]],

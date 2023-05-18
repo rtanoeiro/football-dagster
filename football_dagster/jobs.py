@@ -2,6 +2,18 @@
 
 from dagster import AssetSelection, define_asset_job
 
+# Jobs in data-dagster are used with Ops and are defined in a different way
+# Show Data-Dagster op/job usage
+
+# A job does one of two things:
+# 
+# Materializes a selection of Software-defined Assets
+# Executes a graph of ops, which are not tied to software-defined assets
+# Jobs can be launched in a few different ways:
+# 
+# Manually from the UI
+# At fixed intervals, by schedules
+# When external changes occur, using sensors
 
 JOB_LEAGUES = "update_country_data"
 JOB_STANDINGS_STATISTICS = "updated_league_data"
